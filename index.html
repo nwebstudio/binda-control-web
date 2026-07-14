@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binda Control — Seguridad Privada en Lima | Grupo Mastín</title>
+<meta name="description" content="Binda Control: seguridad privada para discotecas, bares, eventos, empresas y espacios masivos en Lima. Personal uniformado, capacitado y con experiencia real en campo. Cotiza por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0c0e;
+    --charcoal:#17191d;
+    --panel:#1e2126;
+    --steel:#4a5560;
+    --steel-line:#2b2f35;
+    --red:#c8202f;
+    --red-dim:#8f1721;
+    --yellow:#d9c400;
+    --fog:#eeeee9;
+    --fog-dim:#a7aaa9;
+    --radius:2px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--fog);
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.95;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  @media(max-width:640px){.wrap{padding:0 18px;}}
+
+  :focus-visible{outline:2px solid var(--yellow); outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(10,12,14,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+    max-width:1180px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-logo{height:50px; width:auto; display:block; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.55));}
+  @media(max-width:420px){.brand-logo{height:38px;}}
+  .nav-links{display:flex; gap:32px; align-items:center;}
+  .nav-links a{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--fog-dim);
+    padding:6px 0; border-bottom:1px solid transparent;
+    transition:color .2s, border-color .2s;
+  }
+  .nav-links a:hover{color:var(--fog); border-color:var(--red);}
+  .nav-cta{
+    background:var(--red); color:#fff !important; padding:10px 18px !important;
+    font-weight:600; border:1px solid var(--red);
+  }
+  .nav-cta:hover{background:transparent !important; color:var(--red) !important;}
+  .burger{display:none; background:none; border:none; color:var(--fog); font-size:24px; cursor:pointer;}
+  @media(max-width:860px){
+    .nav-links{
+      position:fixed; top:63px; left:0; right:0; background:var(--charcoal);
+      flex-direction:column; gap:0; border-bottom:1px solid var(--steel-line);
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+    }
+    .nav-links.open{max-height:400px;}
+    .nav-links a{width:100%; padding:16px 24px; border-bottom:1px solid var(--steel-line); border-left:none !important;}
+    .nav-cta{background:var(--red) !important;}
+    .burger{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; min-height:100svh; display:flex; align-items:flex-end;
+    padding:140px 0 64px;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute; inset:0; z-index:0;
+  }
+  .hero-bg img{
+    width:100%; height:100%; object-fit:cover; object-position:50% 30%;
+    filter:saturate(0.9) contrast(1.05);
+  }
+  .hero-bg::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,12,14,0.35) 0%, rgba(10,12,14,0.25) 30%, rgba(10,12,14,0.98) 94%),
+               linear-gradient(90deg, rgba(10,12,14,0.92) 0%, rgba(10,12,14,0.55) 45%, rgba(10,12,14,0.25) 100%);
+  }
+  .hero-content{position:relative; z-index:2; width:100%;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em;
+    color:var(--yellow); margin-bottom:18px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; background:var(--yellow); border-radius:50%; animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.25;}}
+  .hero h1{
+    font-size:clamp(2.6rem, 7.5vw, 5.6rem);
+    max-width:900px;
+    color:var(--fog);
+  }
+  .hero h1 em{font-style:normal; color:var(--red);}
+  .hero h1 .stop{
+    display:inline-block; width:0.14em; height:0.14em;
+    background:var(--fog); margin-left:0.1em; vertical-align:0.04em;
+  }
+  .hero h1 .stop.stop-red{background:var(--red);}
+  .hero-sub{
+    max-width:520px; margin-top:22px; color:var(--fog-dim); font-size:16px;
+  }
+  .hero-actions{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 26px; font-family:'IBM Plex Mono',monospace; font-size:12px;
+    letter-spacing:0.1em; text-transform:uppercase; font-weight:600;
+    border:1px solid var(--fog); transition:all .2s ease; cursor:pointer;
+  }
+  .btn-primary{background:var(--red); border-color:var(--red); color:#fff;}
+  .btn-primary:hover{background:transparent; color:var(--red);}
+  .btn-ghost{background:transparent; color:var(--fog);}
+  .btn-ghost:hover{background:var(--fog); color:var(--ink);}
+
+  /* ---------- TICKER / BITÁCORA ---------- */
+  .ticker-bar{
+    background:var(--red); color:#fff; overflow:hidden;
+    border-top:1px solid rgba(255,255,255,0.25); border-bottom:1px solid rgba(255,255,255,0.25);
+    position:relative; z-index:3;
+  }
+  .ticker-track{
+    display:flex; white-space:nowrap; animation:scroll-left 32s linear infinite;
+    width:max-content;
+  }
+  @keyframes scroll-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  .ticker-item{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em;
+    text-transform:uppercase; padding:11px 28px; display:flex; align-items:center; gap:10px;
+    border-right:1px solid rgba(255,255,255,0.3);
+  }
+  .ticker-item b{font-weight:700;}
+  .ticker-item .code{opacity:.75;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:100px 0;}
+  @media(max-width:640px){section{padding:64px 0;}}
+  .sec-head{max-width:640px; margin-bottom:56px;}
+  .sec-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em;
+    color:var(--fog); margin-bottom:14px; display:flex; align-items:center; gap:8px;
+  }
+  .sec-label::before{content:''; width:8px; height:2px; background:var(--red); display:inline-block;}
+  .sec-head h2{font-size:clamp(1.9rem,4.5vw,3.1rem); color:var(--fog);}
+  .sec-desc{color:var(--fog-dim); margin-top:16px; font-size:16px; max-width:560px;}
+
+  /* ---------- SERVICIOS ---------- */
+  .services{background:var(--charcoal); border-top:1px solid var(--steel-line); border-bottom:1px solid var(--steel-line);}
+  .service-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--steel-line);
+    border:1px solid var(--steel-line);
+  }
+  @media(max-width:900px){.service-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.service-grid{grid-template-columns:1fr;}}
+  .service-card{
+    background:var(--charcoal); padding:36px 28px; transition:background .25s ease;
+  }
+  .service-card:hover{background:var(--panel);}
+  .service-index{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--steel); margin-bottom:22px; display:block;
+  }
+  .service-card h3{font-size:1.3rem; color:var(--fog); margin-bottom:12px; font-family:'Inter',sans-serif; font-weight:700; text-transform:none; letter-spacing:0;}
+  .service-card p{color:var(--fog-dim); font-size:14.5px;}
+
+  /* ---------- POR QUÉ (franja con foto) ---------- */
+  .why{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
+  }
+  @media(max-width:860px){.why{grid-template-columns:1fr; gap:36px;}}
+  .why-photo{position:relative; aspect-ratio:4/5; overflow:hidden; border:1px solid var(--steel-line);}
+  .why-photo img{width:100%; height:100%; object-fit:cover; filter:grayscale(20%);}
+  .why-tag{
+    position:absolute; bottom:16px; left:16px; background:var(--ink);
+    border:1px solid var(--steel-line); padding:8px 14px;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--yellow);
+  }
+  .why-list{list-style:none; margin-top:28px;}
+  .why-list li{
+    display:flex; gap:16px; padding:18px 0; border-top:1px solid var(--steel-line);
+  }
+  .why-list li:last-child{border-bottom:1px solid var(--steel-line);}
+  .why-list .num{font-family:'IBM Plex Mono',monospace; color:var(--fog); font-size:13px; flex-shrink:0; padding-top:2px; border:1px solid var(--red); width:26px; height:22px; display:flex; align-items:center; justify-content:center; padding-top:0;}
+  .why-list h4{font-family:'Inter',sans-serif; font-weight:700; font-size:15.5px; margin-bottom:5px;}
+  .why-list p{color:var(--fog-dim); font-size:14px;}
+
+  /* ---------- GALERÍA ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:6px;
+  }
+  @media(max-width:860px){.gallery-grid{grid-template-columns:repeat(3,1fr); gap:4px;}}
+  @media(max-width:520px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
+  .g-item{position:relative; overflow:hidden; background:var(--panel); aspect-ratio:1/1;}
+  .g-item img{width:100%; height:100%; object-fit:cover; object-position:center 25%; transition:transform .5s ease, filter .5s ease; filter:grayscale(45%);}
+  .g-item:hover img{transform:scale(1.06); filter:grayscale(0%);}
+  .g-cap{
+    position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.85), transparent);
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--fog); opacity:0; transform:translateY(6px);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .g-item:hover .g-cap{opacity:1; transform:translateY(0);}
+
+  /* ---------- PROCESO ---------- */
+  .process{background:var(--charcoal); border-top:1px solid var(--steel-line); border-bottom:1px solid var(--steel-line);}
+  .steps{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;
+  }
+  @media(max-width:860px){.steps{grid-template-columns:1fr; gap:28px;}}
+  .step{padding:0 24px 0 0; position:relative;}
+  .step:not(:last-child)::after{
+    content:''; position:absolute; top:14px; right:0; width:24px; height:1px; background:var(--steel);
+  }
+  @media(max-width:860px){.step:not(:last-child)::after{display:none;}}
+  .step-n{font-family:'IBM Plex Mono',monospace; color:var(--fog); font-size:12px; margin-bottom:14px; padding-bottom:6px; border-bottom:2px solid var(--red); display:inline-block;}
+  .step h4{font-family:'Inter',sans-serif; font-weight:700; font-size:16px; margin-bottom:8px;}
+  .step p{color:var(--fog-dim); font-size:14px;}
+
+  /* ---------- CONTACTO ---------- */
+  .contact{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:0; border:1px solid var(--steel-line);
+  }
+  @media(max-width:860px){.contact{grid-template-columns:1fr;}}
+  .contact-left{
+    padding:52px 44px; background:var(--panel); border-right:1px solid var(--steel-line);
+  }
+  @media(max-width:860px){.contact-left{border-right:none; border-bottom:1px solid var(--steel-line); padding:40px 26px;}}
+  .contact-right{padding:52px 44px; background:var(--charcoal);}
+  @media(max-width:860px){.contact-right{padding:40px 26px;}}
+  .contact h2{font-size:clamp(1.7rem,4vw,2.6rem); margin-bottom:16px;}
+  .contact-left p{color:var(--fog-dim); margin-bottom:30px; max-width:420px;}
+  .contact-detail{display:flex; gap:16px; padding:16px 0; border-top:1px solid var(--steel-line);}
+  .contact-detail:last-child{border-bottom:1px solid var(--steel-line);}
+  .contact-detail .ic{
+    width:38px; height:38px; border:1px solid var(--steel); display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; color:var(--yellow); font-family:'IBM Plex Mono',monospace; font-size:14px;
+  }
+  .contact-detail .lab{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--fog-dim); margin-bottom:4px;}
+  .contact-detail .val{font-size:15px; font-weight:600;}
+  .contact-detail a.val:hover{color:var(--yellow);}
+  .quote-list{list-style:none;}
+  .quote-list li{
+    display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-top:1px solid var(--steel-line); font-size:14.5px; color:var(--fog-dim);
+  }
+  .quote-list li:last-child{border-bottom:1px solid var(--steel-line);}
+  .quote-list li::before{content:'—'; color:var(--red); flex-shrink:0;}
+  .big-cta{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background:var(--red); padding:22px 26px; margin-top:30px; cursor:pointer; border:none; width:100%;
+    transition:background .2s ease;
+  }
+  .big-cta:hover{background:#a91825;}
+  .big-cta span{font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; color:#fff; font-size:13px; font-weight:700;}
+  .big-cta .arrow{color:#fff; font-size:20px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:44px 0; border-top:1px solid var(--steel-line);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  .foot-row p{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--fog-dim); letter-spacing:0.05em;}
+  .foot-links{display:flex; gap:22px;}
+  .foot-links a{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--fog-dim);}
+  .foot-links a:hover{color:var(--yellow);}
+
+  /* whatsapp floating button */
+  .wa-float{
+    position:fixed; bottom:22px; right:22px; z-index:90;
+    background:var(--red); color:#fff; width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    border:1px solid rgba(255,255,255,0.2);
+    animation:float-pulse 2.4s infinite;
+  }
+  @keyframes float-pulse{0%,100%{box-shadow:0 6px 20px rgba(200,32,47,0.0);} 50%{box-shadow:0 6px 26px rgba(200,32,47,0.55);}}
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand">
+      <img src="images/logo-blend.png" alt="Binda Control — Grupo Mastín" class="brand-logo">
+    </a>
+    <button class="burger" id="burger" aria-label="Abrir menú">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#servicios">Servicios</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#galeria">Galería</a>
+      <a href="#proceso">Cómo trabajamos</a>
+      <a href="#contacto" class="nav-cta">Cotizar por WhatsApp</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:120px;">
+    <div class="hero-bg" id="heroBg"><img src="images/team-hero.jpg" alt="Equipo completo de Binda Control, personal de seguridad uniformado"></div>
+    <div class="wrap hero-content">
+      <span class="eyebrow">Operativo · Lima, Perú</span>
+      <h1>Control de acceso<span class="stop"></span><br>Vigilancia <em>real</em><span class="stop stop-red"></span></h1>
+      <p class="hero-sub">Personal de seguridad uniformado y capacitado para discotecas, bares, eventos masivos, empresas y condominios. Presencia física, criterio de campo y coordinación directa con el cliente.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/51924213858?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20seguridad%20con%20Binda%20Control." target="_blank" rel="noopener">
+          Cotizar por WhatsApp →
+        </a>
+        <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-bar">
+    <div class="ticker-track">
+      <div class="ticker-item mono"><span class="code">PUNTO/01</span><b>Urban Bar</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/02</span><b>Arena Bar</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/03</span><b>Estadio Alianza Lima</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/04</span><b>Discotecas y afterhours</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/05</span><b>Ferias y activaciones de marca</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/06</span><b>Eventos privados</b></div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-item mono"><span class="code">PUNTO/01</span><b>Urban Bar</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/02</span><b>Arena Bar</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/03</span><b>Estadio Alianza Lima</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/04</span><b>Discotecas y afterhours</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/05</span><b>Ferias y activaciones de marca</b></div>
+      <div class="ticker-item mono"><span class="code">PUNTO/06</span><b>Eventos privados</b></div>
+    </div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <section class="services" id="servicios">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label">// Servicios</span>
+        <h2>Seguridad para cada tipo de espacio</h2>
+        <p class="sec-desc">Adaptamos el número de agentes, el perfil y el protocolo según el tipo de local, el aforo y el horario de operación.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="service-grid reveal">
+        <div class="service-card">
+          <span class="service-index mono">001</span>
+          <h3>Discotecas y bares</h3>
+          <p>Control de ingreso, verificación de edad, manejo de aforo y resguardo durante toda la operación nocturna.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-index mono">002</span>
+          <h3>Eventos y conciertos</h3>
+          <p>Personal para vallas, backstage, control de accesos VIP y coordinación con producción y organizadores.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-index mono">003</span>
+          <h3>Resguardo corporativo</h3>
+          <p>Seguridad para oficinas, activaciones de marca, ferias y puntos de atención al público.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-index mono">004</span>
+          <h3>Condominios y residencial</h3>
+          <p>Control de acceso de vehículos y visitas, rondas perimetrales y coordinación con la junta vecinal.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-index mono">005</span>
+          <h3>Escoltas y traslado</h3>
+          <p>Acompañamiento personal y resguardo en traslados puntuales dentro de Lima.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-index mono">006</span>
+          <h3>Eventos deportivos</h3>
+          <p>Personal capacitado para el control de público en estadios y recintos de alto aforo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS / POR QUÉ -->
+  <section id="nosotros">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label">// Nosotros</span>
+        <h2>Gente de campo, no solo de papel</h2>
+      </div>
+      <div class="why reveal">
+        <div class="why-photo">
+          <img src="images/urban-bar.jpeg" alt="Agente de Binda Control en la puerta de Urban Bar, Lima">
+          <div class="why-tag mono">Urban Bar — Turno noche</div>
+        </div>
+        <div>
+          <p class="sec-desc" style="margin-top:0;">Binda Control (Grupo Mastín) trabaja con personal uniformado que conoce el terreno: puertas de discoteca, vallas de concierto, accesos corporativos. No mandamos gente improvisada, mandamos equipo con criterio.</p>
+          <ul class="why-list">
+            <li>
+              <span class="num mono">01</span>
+              <div><h4>Personal uniformado</h4><p>Chalecos e identificación visible en todo momento, con la marca del cliente cuando se requiere.</p></div>
+            </li>
+            <li>
+              <span class="num mono">02</span>
+              <div><h4>Coordinación directa</h4><p>Un solo punto de contacto para armar el servicio, ajustar turnos y resolver imprevistos el mismo día.</p></div>
+            </li>
+            <li>
+              <span class="num mono">03</span>
+              <div><h4>Cobertura en Lima</h4><p>Atendemos locales y eventos en toda Lima, con experiencia real en zonas de alta afluencia nocturna.</p></div>
+            </li>
+            <li>
+              <span class="num mono">04</span>
+              <div><h4>Flexibilidad de aforo</h4><p>Desde un punto de control fijo hasta equipos completos para eventos masivos.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label">// Bitácora visual</span>
+        <h2>Equipo en operación</h2>
+        <p class="sec-desc">Registro real de servicios: control de acceso, eventos y puntos fijos en distintos locales de Lima.</p>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="g-item"><img src="images/entrance.jpeg" alt="Guardias en control de acceso de local nocturno"><div class="g-cap mono">Control de acceso · Puerta principal</div></div>
+        <div class="g-item"><img src="images/neon-hall.jpeg" alt="Agente Binda Control en pasillo con luces de neón"><div class="g-cap mono">Recorrido interno · Zona VIP</div></div>
+        <div class="g-item"><img src="images/blue-wall.jpeg" alt="Agente de seguridad Grupo Mastín en interior de local"><div class="g-cap mono">Punto fijo · Salón principal</div></div>
+        <div class="g-item"><img src="images/arena-bar.jpeg" alt="Equipo de Binda Control en Arena Bar"><div class="g-cap mono">Equipo completo · Arena Bar</div></div>
+        <div class="g-item"><img src="images/green-neon.jpeg" alt="Agentes de espaldas con logo Binda Control Grupo Mastín"><div class="g-cap mono">Supervisión de sala</div></div>
+        <div class="g-item"><img src="images/stadium.jpeg" alt="Agente de seguridad en exterior del estadio Alianza Lima"><div class="g-cap mono">Evento deportivo · Perímetro externo</div></div>
+        <div class="g-item"><img src="images/purple-neon.jpeg" alt="Agente Binda Control Grupo Mastín en pista de baile"><div class="g-cap mono">Control de pista</div></div>
+        <div class="g-item"><img src="images/street-control.jpeg" alt="Agente Binda Control en control de feria callejera"><div class="g-cap mono">Feria y espacio abierto</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="process" id="proceso">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label">// Cómo trabajamos</span>
+        <h2>De la consulta al operativo</h2>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <span class="step-n mono">01 / Consulta</span>
+          <h4>Nos escribes por WhatsApp</h4>
+          <p>Nos cuentas el tipo de local o evento, fecha, horario y aforo aproximado.</p>
+        </div>
+        <div class="step">
+          <span class="step-n mono">02 / Propuesta</span>
+          <h4>Armamos el servicio</h4>
+          <p>Definimos cantidad de agentes, turnos y protocolo según el riesgo del evento.</p>
+        </div>
+        <div class="step">
+          <span class="step-n mono">03 / Coordinación</span>
+          <h4>Confirmamos el equipo</h4>
+          <p>Asignamos personal uniformado y coordinamos el punto de encuentro y horario de llegada.</p>
+        </div>
+        <div class="step">
+          <span class="step-n mono">04 / Operativo</span>
+          <h4>Cobertura en sitio</h4>
+          <p>El equipo cubre el turno completo con un responsable como punto de contacto contigo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="wrap">
+      <div class="contact reveal">
+        <div class="contact-left">
+          <h2>Cotiza tu servicio</h2>
+          <p>Escríbenos por WhatsApp o correo con el tipo de evento o local, fecha y aforo aproximado. Te respondemos con una propuesta según lo que necesites.</p>
+
+          <div class="contact-detail">
+            <div class="ic">W</div>
+            <div>
+              <div class="lab mono">WhatsApp</div>
+              <a class="val" href="https://wa.me/51924213858" target="_blank" rel="noopener">+51 924 213 858</a>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="ic">@</div>
+            <div>
+              <div class="lab mono">Correo</div>
+              <a class="val" href="mailto:Seguridadbinda@control.com.pe">Seguridadbinda@control.com.pe</a>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="ic">◎</div>
+            <div>
+              <div class="lab mono">Cobertura</div>
+              <span class="val">Todo Lima</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right">
+          <h3 style="font-family:'Inter',sans-serif; font-weight:700; font-size:16px; text-transform:none; letter-spacing:0; margin-bottom:6px;">Ten a la mano estos datos</h3>
+          <p style="color:var(--fog-dim); font-size:14px; margin-bottom:6px;">Para cotizar más rápido, cuéntanos:</p>
+          <ul class="quote-list">
+            <li>Tipo de local o evento</li>
+            <li>Fecha y horario del servicio</li>
+            <li>Aforo o número de personas esperado</li>
+            <li>Dirección del local o evento</li>
+            <li>Si ya tienes personal propio o necesitas el equipo completo</li>
+          </ul>
+          <button class="big-cta" onclick="window.open('https://wa.me/51924213858?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20seguridad%20con%20Binda%20Control.%20Tipo%20de%20evento%3A%20','_blank')">
+            <span>Iniciar cotización</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <img src="images/logo-blend.png" alt="Binda Control" style="height:28px; width:auto;">
+      <p>© <span id="year"></span> BINDA CONTROL — GRUPO MASTÍN. SEGURIDAD PRIVADA · LIMA, PERÚ.</p>
+    </div>
+    <div class="foot-links">
+      <a href="https://wa.me/51924213858" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:Seguridadbinda@control.com.pe">Correo</a>
+      <a href="#top">Volver arriba ↑</a>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/51924213858?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20seguridad%20con%20Binda%20Control." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg width="27" height="27" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.041 2C6.505 2 2 6.464 2 11.951c0 1.868.52 3.62 1.427 5.121L2 22l5.075-1.317a10.11 10.11 0 0 0 4.966 1.302h.004c5.535 0 10.04-4.464 10.04-9.951C22.085 6.464 17.581 2 12.041 2zm0 18.098h-.003a8.31 8.31 0 0 1-4.234-1.16l-.304-.18-3.014.782.805-2.924-.198-.301a8.221 8.221 0 0 1-1.285-4.364c0-4.554 3.723-8.26 8.303-8.26 4.582 0 8.305 3.706 8.305 8.26 0 4.555-3.723 8.147-8.369 8.147z"/></svg>
+</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
